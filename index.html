@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API wiki格式生成</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="./src/semantic/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="./src/css/tools.css">
+</head>
+<body class="pushable">
+<div class="ui sidebar left inverted vertical menu" id="optlist">
+    <div class="item">
+        <a><i class="icon list layout"></i>配置列表</a>
+    </div>
+    <a class="item">
+      1
+    </a>
+</div>
+<div class="pusher">
+    <div class="main ui container">
+        <div class="ui hidden divider"></div>
+        <div class="ui piled blue segment">
+            <h3 class="ui dividing header">API wiki格式生成</h3>
+            <div class="ui form" id="param_form">
+                <div class="field title">
+                    <label>接口名称</label>
+                    <input type="text" class="text" id="title" name="title" value="" placeholder="接口名称">
+                </div>
+                <div class="field url">
+                    <label>接口地址</label>
+                    <input type="text" class="text" id="url" name="url" value="" placeholder="接口地址">
+                </div>
+                <div class="field desc">
+                    <label>接口描述</label>
+                    <textarea class="text" rows="3" name="desc" id="desc" placeholder="接口描述"></textarea>
+                </div>
+                <div class="ui divider"></div>
+                <div class="inline field">
+                    <label class="ui header">请求参数</label>
+                    <button class="ui tiny basic button" id="add_request"><i class="icon plus"></i>添加参数</button>
+                </div>
+                <div class="ui segment" id="request_arr">
+                    <div class="inline fields">
+                        <div class="inline field" data-tooltip="删除全部">
+                            <i class="circular icon link remove red" id="removeall_request"></i>
+                        </div>
+                        <div class="four wide field">
+                            <label>参数名</label>
+                        </div>
+                        <div class="three wide field">
+                            <label>必填</label>
+                        </div>
+                        <div class="three wide field">
+                            <label>类型</label>
+                        </div>
+                        <div class="six wide field">
+                            <label>描述</label>
+                        </div>
+                    </div>
+                    <div class="fields">
+                        <div class="inline field" data-tooltip="删除">
+                            <i class="circular icon link remove red" onclick="removeOneRow(this)"></i>
+                        </div>
+                        <div class="four wide field">
+                            <input type="text" placeholder="参数名" value="">
+                        </div>
+                        <div class="three wide field">
+                            <select class="ui fluid dropdown">
+                                <option value="0" >否</option>
+                                <option value="1"  selected>是</option>
+                            </select>
+                        </div>
+                        <div class="three wide field">
+                            <select class="ui fluid dropdown">
+                                <option value="string">string</option>
+                                <option value="integer">integer</option>
+                                <option value="json">json</option>
+                                <option value="array">array</option>
+                            </select>
+                        </div>
+                        <div class="six wide field">
+                            <input type="text" placeholder="描述" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <h5 class="ui header">应答消息</h5>
+                <div class="ui segment">
+                    <div class="inline fields">
+                        <div class="six wide field">
+                            <label>参数名</label>
+                        </div>
+                        <div class="three wide field">
+                            <label>类型</label>
+                        </div>
+                        <div class="twelve wide field">
+                            <label>描述</label>
+                        </div>
+                    </div>
+                    <div class="fields" id="response_errno">
+                        <div class="six wide field name">
+                            <input type="text" placeholder="参数名" value="errno">
+                        </div>
+                        <div class="three wide field type">
+                            <select class="ui fluid dropdown">
+                                <option value="string">string</option>
+                                <option value="integer" selected>integer</option>
+                                <option value="json">json</option>
+                                <option value="array">array</option>
+                            </select>
+                        </div>
+                        <div class="twelve wide field desc">
+                            <input type="text" placeholder="描述" value="返回码,当且仅当获取成功时返回0">
+                        </div>
+                    </div>
+                    <div class="fields" id="response_errmsg">
+                        <div class="six wide field name">
+                            <input type="text" placeholder="参数名" value="errmsg">
+                        </div>
+                        <div class="three wide field type">
+                            <select class="ui fluid dropdown">
+                                <option value="string" selected>string</option>
+                                <option value="integer">integer</option>
+                                <option value="json">json</option>
+                                <option value="array">array</option>
+                            </select>
+                        </div>
+                        <div class="twelve wide field desc">
+                            <input type="text" placeholder="描述" value="返回码描述">
+                        </div>
+                    </div>
+                    <div class="fields" id="response_result">
+                        <div class="six wide field name">
+                            <input type="text" placeholder="参数名" value="result">
+                        </div>
+                        <div class="three wide field type">
+                            <select class="ui fluid dropdown">
+                                <option value="string" selected>string</option>
+                                <option value="integer">integer</option>
+                                <option value="json">json</option>
+                                <option value="array">array</option>
+                            </select>
+                        </div>
+                        <div class="twelve wide field desc">
+                            <input type="text" placeholder="描述" value="返回信息">
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <div class="inline field">
+                            <label>result 示例</label>
+                            <button class="ui tiny basic button" id="add_response"><i class="icon plus"></i>添加参数</button>
+                        </div>
+                        <div class="ui divider"></div>
+                        <div id="response_arr">
+                            <div class="inline fields">
+                                <div class="inline field" data-tooltip="删除全部">
+                                    <i class="circular icon link remove red" id="removeall_response"></i>
+                                </div>
+                                <div class="six wide field">
+                                    <label>参数</label>
+                                </div>
+                                <div class="ten wide field">
+                                    <label>描述</label>
+                                </div>
+                            </div>
+                            <div class="inline fields">
+                                <div class="field" data-tooltip="删除">
+                                    <i class="circular icon remove link red" onclick="removeOneRow(this)"></i>
+                                </div>
+                                <div class="six wide field">
+                                    <div class="ui icon input" data-position="top left" data-tooltip="当且仅当第一个参数名开头为+++三个字符，示例的参数将作为二维数组的子元素(弹出层子参数同样适用)，如填入+++a和1|b和2，格式结果为[{a:1},{b:2}]">
+                                        <i class="circular plus link icon" title="添加子参数" onclick="addChild(this)" data-content=""></i>
+                                        <input class="text" placeholder="参数">
+                                    </div>
+                                </div>
+                                <div class="ten wide field">
+                                    <input class="text" placeholder="描述">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <button class="ui basic button blue" id="showopt">配置列表</button>
+                    <button class="ui basic button" onclick="saveAllinfo()">保存配置</button>
+                    <div class="ui toggle checkbox" data-tooltip="将result使用json_encode($result, JSON_UNESCAPED_UNICODE)编码为字符串，启用后result 示例会失效" id="isjson">
+                        <input type="checkbox" tabindex="0" class="hidden" value="1" checked>
+                        <label>JSON字符串（推荐）</label>
+                    </div>
+                    <div class="ui toggle checkbox" data-tooltip="将返回php注释" id="isdoc">
+                        <input type="checkbox" tabindex="0" class="hidden" value="1">
+                        <label>PHP注释</label>
+                    </div>
+                    <button class="right floated ui basic button green" id="create"><i class="icon send"></i>生成</button>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <h5 class="ui header">结果</h5>
+            <div class="ui tall stacked segment form">
+                <textarea id="result" name="result" class="text" rows="2" style="resize: none" readonly>NULL</textarea>
+            </div>
+        </div>
+        <!--弹出层-->
+        <div class="modeldiv">
+            <!--添加子参数-->
+            <div class="ui modal" id="addChild" data-id="">
+                <div class="header">添加子参数</div>
+                <div class="content ui form">
+                    <div class="ui segment" id="child_arr">
+                        <div class="inline fields">
+                            <div class="inline field" data-tooltip="删除全部">
+                                <i class="circular icon link remove red" id="removeall_child"></i>
+                            </div>
+                            <div class="six wide field">
+                                <label>参数</label>
+                            </div>
+                            <div class="ten wide field">
+                                <label>描述</label>
+                            </div>
+                        </div>
+                        <div class="inline fields">
+                            <div class="field" data-tooltip="删除">
+                                <i class="circular icon remove link red" onclick="removeOneRow(this)"></i>
+                            </div>
+                            <div class="six wide field">
+                                <input class="text" placeholder="参数">
+                            </div>
+                            <div class="ten wide field">
+                                <input class="text" placeholder="描述">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="left floated ui basic button" id="add_child"><i class="icon plus"></i>添加参数</button>
+                    <div class="ui cancel basic button">取消</div>
+                    <div class="ui approve basic button green" id="saveChild">保存</div>
+                </div>
+            </div>
+            <!--/添加子参数-->
+        </div>
+        <!--/弹出层-->
+    </div>
+</div>
+<!--加载js-->
+<script type="text/javascript" src="./src/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="./src/semantic/semantic.min.js"></script>
+<script type="text/javascript" src="./src/js/tools.js"></script>
+<!--/加载js-->
+</body>
+</html>
