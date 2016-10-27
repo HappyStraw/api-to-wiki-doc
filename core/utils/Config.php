@@ -28,6 +28,7 @@ final class Config
                     self::set(include $file . '/' . $filename, $pathinfo['filename']);
                 }
             }
+            closedir($dirHandle);
         } elseif (is_file($file)) {
             $pathinfo = pathinfo($file);
             if ($pathinfo['extension'] === 'php') {
